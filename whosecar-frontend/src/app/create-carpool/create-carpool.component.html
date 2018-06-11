@@ -1,0 +1,25 @@
+<h6 class="text-center card-title">An Easy to Use Carpool Organization Tool</h6>
+
+<div class="container">
+  <form #NewCarpoolForm="ngForm" id='create-form' class="col-lg-6 offset-lg-3 " action="#"
+        (ngSubmit)="newCarpoolSubmit(NewCarpoolForm)">
+    <legend class="text-center">Create a New Carpool</legend>
+    <span class="row justify-content-center align-middle">
+      <input name="carpoolName" class="form-space-left form-control" type="text" placeholder="Carpool Name" ngModel/>
+    </span>
+    <span class="row justify-content-center align-middle form-space-above">
+     <input  *ngIf="loading == false" id="createCarpoolSubmit" class="col-lg-10 btn" type="submit" value="Create New Carpool"/>
+
+      <div class="spinner" *ngIf="loading" >
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+
+
+    </span>
+  </form>
+</div>
+

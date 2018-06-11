@@ -15,17 +15,9 @@ class CarpoolActions(Resource):
         if c is None:  # Confirm Carpool Exists
             abort(400, description="CarpoolID Not Found")
 
-        carpool_dict = {
-            'id': c.id,
-            'Title': c.Title,
-            'TimeCreated': c.DateCreated.__str__(),
-            'NumberCars': c.Cars.__len__(),
-        }
+        return c.toJson()
 
-        return carpool_dict
-
-    def post(self) -> dict:
-        data = retrieve_data(request)['CarpoolName']  # Fetch the Data and extract the key
+    def post(self, CarpoolName) -> dict:
 
         carpool_i_d = random_b64_string(8)  # Generate Random ID For the Carpool
 
@@ -35,7 +27,7 @@ class CarpoolActions(Resource):
 
         db.session.add(
             Carpool(id=carpool_i_d,
-                    Title=data,
+                    Title=CarpoolName,
                     DateCreated=datetime.datetime.now()))  # Create instance of Carpool and add it to the DB
         db.session.commit()  # Commit the Changes to the DB
 
@@ -73,6 +65,7 @@ class CarpoolCarActions(Resource):
         if carpool is None:
             abort(400, description='Carpool ID was not found')
         data = retrieve_data(request)
+        print(data)
 
         car_id = random_b64_string(8)
         while Cars.query.filter_by(id=car_id).first() is not None:  # Guarantees Unique ID
@@ -175,15 +168,7 @@ class PassengerActions(Resource):
         if pass_check == None:
             abort(400, description="PassengerID Not Found")
 
-        info = {
-            'id': pass_check.id,
-            'car_id': pass_check.car_id,
-            'driver': pass_check.driver,
-            'TimeSelected': pass_check.TimeSelected.__str__(),
-            'Name': pass_check.PassengerName
-        }
-
-        return info
+        return pass_check.toJson();
 
     def post(self, CarpoolID):
 
@@ -245,3 +230,26 @@ class CarActions(Resource):
             info["Passengers"].append(p.id)
 
         return info
+
+class AuthenticateUser(Resource):
+    def post(self):
+        data = retrieve_data(request)
+
+        carpool_id = data['CarpoolID']
+
+        passenger_name = data['PassengerName']
+
+        carpool = Carpool.query.filter_by(id=carpool_id).first()
+
+        if carpool is None:
+            abort(400,description='CarpoolID Not Found')
+
+        passenger_check = Users.query.filter_by(PassengerName=passenger_name, carpool_id=carpool_id).first()
+
+        if passenger_check is None:
+            u = Users(id=random_b64_string(8), carpool_id=carpool_id, driver=False, TimeSelected=datetime.datetime.now(), PassengerName=passenger_name )
+            db.session.add(u)
+            db.session.commit()
+            return u.toJson()
+
+        return passenger_check.toJson()

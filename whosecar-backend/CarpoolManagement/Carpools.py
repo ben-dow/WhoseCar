@@ -9,6 +9,21 @@ class Carpool(db.Model):
     Cars = db.relationship('Cars', backref='carpool', lazy=True)
     Users = db.relationship('Users', backref='carpool', lazy=True)
 
+    def toJson(self):
+        json ={
+            'id': self.id,
+            'Title': self.Title,
+            'Cars': [],
+            'Users': {}
+        }
+
+        for c in self.Cars:
+            json['Cars'].append(c.toJson())
+
+        for u in self.Users:
+            json['Users'][u.id] = u.toJson()
+        return json
+
 
 class Cars(db.Model):
     id = db.Column(db.String(8), primary_key=True)
@@ -19,6 +34,21 @@ class Cars(db.Model):
 
     Passengers = db.relationship('Users', backref='cars', lazy=True)
 
+    def toJson(self):
+        json = {
+            'id': self.id,
+            'CarCapacity': self.CarCapacity,
+            'Carpool_ID': self.carpool_id,
+            'Owner_ID':self.owner_id,
+            'Passengers': [],
+            'Owner_Name': Users.query.filter_by(id=self.owner_id).first().PassengerName
+        }
+        for p in self.Passengers:
+            json['Passengers'].append(p.toJson())
+        return json
+
+
+
 
 class Users(db.Model):
     id = db.Column(db.String(8), primary_key=True)
@@ -27,3 +57,13 @@ class Users(db.Model):
     driver = db.Column(db.Boolean)
     TimeSelected = db.Column(db.TIMESTAMP)
     PassengerName = db.Column(db.String(24))
+
+    def toJson(self):
+        json ={
+            'id': self.id,
+            'Car_ID': self.car_id,
+            'Carpool_ID': self.carpool_id,
+            'Driver': self.driver,
+            'Name': self.PassengerName
+        }
+        return json

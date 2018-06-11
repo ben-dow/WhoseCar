@@ -1,0 +1,24 @@
+<ng-container *ngIf="loaded==false">
+
+  <div class="spinner" >
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="loaded">
+
+<h3 class="text-center page-header"><span *ngIf="loaded">{{CarpoolModel.Title}}</span></h3>
+
+<app-log-in class="m-1" *ngIf="loggedin == false" (LoggedIn)="onLoggedIn($event)" (LoggedInUser)="onPersonalInformation($event)"></app-log-in>
+<app-carpool-select *ngIf="loggedin" [cars]="CarpoolModel.Cars" [PassengerData]="PersonalData" (UpdateCarpoolInfo)="onUpdateCarpoolInfo($event)"></app-carpool-select>
+
+
+  <div class="col-lg-6 offset-lg-3 text-center  border">
+    <legend>Carpool</legend>
+  </div>
+<app-carpool-view [cars]="CarpoolModel.Cars"></app-carpool-view>
+</ng-container>

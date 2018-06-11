@@ -1,0 +1,12 @@
+<div class="container  p-2">
+<div class="container  p-2 ">
+  <div class="row " >
+    <div style="margin-left:10px" class=" border   span1 p-3 mt-3" *ngFor="let car of cars">
+      <p>Driver Name: {{car.Owner_Name}}</p>
+      <p>Capacity: {{car.CarCapacity}}</p>
+      <p>Current Fill: {{car.Passengers.length}}</p>
+      <p>Passengers: <span *ngFor="let passengers of car.Passengers">{{passengers.Name}},</span> </p>
+
+    </div>
+  </div>
+  </div>
