@@ -17,7 +17,7 @@
 <app-carpool-select *ngIf="loggedin" [cars]="CarpoolModel.Cars" [PassengerData]="PersonalData" (UpdateCarpoolInfo)="onUpdateCarpoolInfo($event)"></app-carpool-select>
 
 
-  <div class="col-lg-6 offset-lg-3 text-center  border">
+  <div class="col-lg-6 offset-lg-3 text-center mt-1 border">
     <legend>Carpool</legend>
   </div>
 <app-carpool-view [cars]="CarpoolModel.Cars"></app-carpool-view>
