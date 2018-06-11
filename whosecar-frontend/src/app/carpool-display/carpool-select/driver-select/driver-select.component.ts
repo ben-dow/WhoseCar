@@ -21,7 +21,7 @@ export class DriverSelectComponent implements OnInit {
 
 
   onClick() {
-    if (this.car.CarCapacity == this.car.Passengers.length ) {
+    if (this.car.CarCapacity === this.car.Passengers.length ) {
       return;
     }
     this.informationService.setPassengerCar(this.passengerData.id, this.car.id).subscribe( data => this.DriverChosen.emit());
