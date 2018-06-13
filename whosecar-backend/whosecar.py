@@ -53,7 +53,8 @@ api.add_resource(PassengerActions,
                  '/Passengers/<PassengerID>/RemovePassenger',  # Remove a Passenger From the System (DELETE)
                  '/Passengers/<PassengerID>/Modify')  # Modify a Passenger in the System with new information (PATCH)
 api.add_resource(CarActions,
-                 '/Cars/<CarID>')  # Get Information About Car within a carpool(GET)
+                 '/Cars/<CarID>', # Get Information About Car within a carpool(GET)
+                 '/Cars/<CarID>/Modify') # Change the Capacity of a Car
 
 api.add_resource(AuthenticateUser,
                  '/Authenticate')

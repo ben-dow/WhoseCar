@@ -1,7 +1,7 @@
 export interface Carpool {
   id: string;
   Title: string;
-  Cars: Car[];
+  Cars: {};
   Users:  {};
 }
 export interface Car {

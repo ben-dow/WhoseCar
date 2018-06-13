@@ -65,7 +65,6 @@ class CarpoolCarActions(Resource):
         if carpool is None:
             abort(400, description='Carpool ID was not found')
         data = retrieve_data(request)
-        print(data)
 
         car_id = random_b64_string(8)
         while Cars.query.filter_by(id=car_id).first() is not None:  # Guarantees Unique ID
@@ -99,6 +98,14 @@ class CarpoolCarActions(Resource):
 
         if car is None:
             return abort(400, description='Car ID was not found')
+
+        user = Users.query.filter_by(id=car.owner_id).first()
+
+        user.driver = False
+        user.car_id = None
+
+        for p in car.Passengers:
+            p.car_id = None;
 
         db.session.delete(car)
         db.session.commit()
@@ -217,19 +224,40 @@ class CarActions(Resource):
         if car_check is None:
             abort(400, description="CarID Not Found")
 
-        info = {
-            "id": car_check.id,
-            "CarCapacity": car_check.CarCapacity,
-            "TimeCreated": car_check.TimeCreated.__str__(),
-            "CarpoolID": car_check.carpool_id,
-            "Passengers": []
+        return car_check.toJson()
 
-        }
+    def patch(self, CarID):
+        car_check = Cars.query.filter_by(id=CarID).first()
 
-        for p in car_check.Passengers:
-            info["Passengers"].append(p.id)
+        if car_check is None:
+            abort(400)
 
-        return info
+        data = retrieve_data(request)
+
+        newCapacity = data['Capacity']
+
+        if car_check.CarCapacity <= int(float(newCapacity)):
+            car_check.CarCapacity = newCapacity
+            db.session.commit()
+            return car_check.toJson()
+
+        if len(car_check.Passengers) <= int(float(newCapacity)):
+            car_check.CarCapacity = newCapacity
+            db.session.commit()
+            return car_check.toJson()
+
+
+        passengers = Users.query.filter_by(car_id=CarID).order_by(Users.TimeSelected.desc())
+
+        for i in range(0, len(car_check.Passengers)-int(float(newCapacity))):
+            passengers[i].car_id = None
+
+
+        car_check.CarCapacity = newCapacity
+
+        db.session.commit()
+
+        return car_check.toJson();
 
 class AuthenticateUser(Resource):
     def post(self):
@@ -242,12 +270,13 @@ class AuthenticateUser(Resource):
         carpool = Carpool.query.filter_by(id=carpool_id).first()
 
         if carpool is None:
-            abort(400,description='CarpoolID Not Found')
+            abort(400, description='CarpoolID Not Found')
 
         passenger_check = Users.query.filter_by(PassengerName=passenger_name, carpool_id=carpool_id).first()
 
         if passenger_check is None:
-            u = Users(id=random_b64_string(8), carpool_id=carpool_id, driver=False, TimeSelected=datetime.datetime.now(), PassengerName=passenger_name )
+            u = Users(id=random_b64_string(8), carpool_id=carpool_id, driver=False,
+                      TimeSelected=datetime.datetime.now(), PassengerName=passenger_name)
             db.session.add(u)
             db.session.commit()
             return u.toJson()

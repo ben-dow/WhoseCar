@@ -28,7 +28,7 @@ export class CarpoolInformationService {
     return this.http.post<any>(urlString, {'car_capacity': CarCapacity } ).map(response => response);
   }
 
-  getPassengerInformation(Passenger: string){
+  getPassengerInformation(Passenger: string) {
     const urlString: string = 'http://localhost:5000/Passengers/' + Passenger;
     return this.http.get<any>(urlString ).map(response => response);
   }
@@ -37,4 +37,23 @@ export class CarpoolInformationService {
     const urlString: string = 'http://localhost:5000/Cars/' + car + '/Passengers/AddPassenger/' + Passenger;
     return this.http.post<any>(urlString, {} ).map(response => response);
   }
+
+  changeCarCapacity(car: string, capacity: number) {
+    const urlString: string = 'http://localhost:5000/Cars/' + car + '/Modify';
+    return this.http.patch<any>(urlString, {'Capacity': capacity} ).map(response => response);
+  }
+
+  removeCar(car) {
+    const urlString: string = 'http://localhost:5000/Carpool/' + localStorage.getItem('CarpoolID') + '/RemoveCar/' + car;
+    return this.http.delete<any>(urlString).map(response => response);
+
+  }
+
+  removePassengerFromCar(car: string, passenger: string ) {
+    const urlString = 'http://localhost:5000/Cars/' + car + '/Passengers/DeletePassenger/' + passenger;
+    return this.http.delete(urlString).map(response => response);
+
+  }
+
+
 }

@@ -13,15 +13,16 @@ class Carpool(db.Model):
         json ={
             'id': self.id,
             'Title': self.Title,
-            'Cars': [],
+            'Cars': {},
             'Users': {}
         }
 
         for c in self.Cars:
-            json['Cars'].append(c.toJson())
+            json['Cars'][c.id] = c.toJson()
 
         for u in self.Users:
             json['Users'][u.id] = u.toJson()
+
         return json
 
 

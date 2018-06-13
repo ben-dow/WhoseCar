@@ -15,4 +15,8 @@ export class CarpoolViewComponent implements OnInit {
   ngOnInit() {
   }
 
+  objectKeys(obj){
+    return Object.keys(obj);
+  }
+
 }

@@ -10,12 +10,15 @@ import {CarpoolInformationService} from '../../_services/carpool-information.ser
 })
 export class CarpoolSelectComponent implements OnInit {
 
-  @Input() cars: Car[];
+  @Input() cars: {};
   @Input() PassengerData: Passenger;
   @Output() UpdateCarpoolInfo = new EventEmitter<boolean>();
 
+
   Driver: boolean;
 
+  editMode = false;
+  private formInfo: { capacity: number };
 
   constructor(private carpoolService: CarpoolInformationService) {
   }
@@ -29,7 +32,7 @@ export class CarpoolSelectComponent implements OnInit {
 
   OnCreateDriver(form: NgForm) {
     const Capacity = form.value['CarCapacity'];
-    this.carpoolService.CreateDriver(Capacity, this.PassengerData.id).subscribe( data => this.UpdateCarpoolInfo.emit(true));
+    this.carpoolService.CreateDriver(Capacity, this.PassengerData.id).subscribe(data => this.UpdateCarpoolInfo.emit(true));
 
 
   }
@@ -37,4 +40,39 @@ export class CarpoolSelectComponent implements OnInit {
   OnCarChoosenUpdated() {
     this.UpdateCarpoolInfo.emit(true);
   }
+
+  objectKeys(obj) {
+    return Object.keys(obj);
+  }
+
+  OnSaveChanges(form: NgForm) {
+    const value = form.value['capacity'];
+    if (value === '')  {
+      this.editMode = false;
+    } else {
+
+      this.carpoolService.changeCarCapacity(this.PassengerData.Car_ID, value).subscribe(data => {
+        this.UpdateCarpoolInfo.emit(true);
+        this.editMode = false;
+
+      });
+    }
+
+}
+
+  OnRemoveFromCar() {
+    this.carpoolService.removePassengerFromCar(this.PassengerData.Car_ID, this.PassengerData.id).subscribe(data => {
+      this.UpdateCarpoolInfo.emit(true);
+    });
+  }
+
+
+  OnDeleteCar() {
+    this.carpoolService.removeCar(this.PassengerData.Car_ID).subscribe(data => {
+      this.UpdateCarpoolInfo.emit(true);
+      this.editMode = false;
+    });
+
+  }
+
 }
