@@ -7,6 +7,7 @@ import Login from "./CarpoolTools/Login/Login";
 import Settings from "./CarpoolTools/Settings/Settings";
 import Share from "./CarpoolTools/Share/Share";
 import ToolSelect from "./ToolSelect";
+import Cookies from "universal-cookie"
 
 class Carpool extends Component {
 
@@ -19,16 +20,18 @@ class Carpool extends Component {
         this.state = {
             CarpoolID : this.props.match.params.id,
             CarpoolData: null,
-            isLoggedIn: true,
+            isLoggedIn: false,
             ActiveComponent : "None"
 
 
         };
 
-        this.fetchCarpoolData = this.fetchCarpoolData.bind(this);
-        this.navUpdate = this.navUpdate.bind(this);
+        this.cookies = new Cookies();
+        this.checkForTokenInCookie();
 
-        
+        this.fetchCarpoolData = this.fetchCarpoolData.bind(this);
+
+
         this.fetchCarpoolData();
     }
 
@@ -61,12 +64,23 @@ class Carpool extends Component {
 
     }
 
-    navUpdate(componentName){
+    checkForTokenInCookie(){
+        const token = this.cookies.get('CarpoolUserToken');
+        if (token == null){
+            return false
+        }
 
-        this.setState({
-            ActiveComponent : componentName
-        })
+
     }
+
+    validateToken(token){
+        axios(
+            { method: 'head',
+              url: '/api/ValidateToken'
+            }
+        );
+
+
 
 
 
@@ -118,19 +132,19 @@ class Carpool extends Component {
                     <div className="border border-light divider"/>
 
                     <Switch>
-                        <Route exact path={`${this.props.match.url}`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"None"} />}/>
-                        <Route path={`${this.props.match.url}/Login`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Login"} />}/>
-                        <Route path={`${this.props.match.url}/Display`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Display"} />}/>
-                        <Route path={`${this.props.match.url}/Settings`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Settings"} />}/>
-                        <Route path={`${this.props.match.url}/Share`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Share"} />}/>
+                        <Route exact path={`${this.props.match.url}`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"None"} LoggedIn={this.state.isLoggedIn} />}/>
+                        <Route path={`${this.props.match.url}/Login`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Login"} LoggedIn={this.state.isLoggedIn} />}/>
+                        <Route path={`${this.props.match.url}/Display`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Display"} LoggedIn={this.state.isLoggedIn} />}/>
+                        <Route path={`${this.props.match.url}/Settings`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Settings"} LoggedIn={this.state.isLoggedIn} />}/>
+                        <Route path={`${this.props.match.url}/Share`} render={(props) => <ToolSelect {...props} BaseURL={this.props.match.url} ActiveLink={"Share"} LoggedIn={this.state.isLoggedIn} />}/>
 
                     </Switch>
 
                     <Switch>
-                        <Route path={`${this.props.match.url}/Login`} render={(props) => <Login {...props} NavUpdater={this.navUpdate} />}/>
-                        <Route path={`${this.props.match.url}/Display`} render={(props) => <CarpoolDisplay {...props}  NavUpdater={this.navUpdate}  />}/>
-                        <Route path={`${this.props.match.url}/Settings`} render={(props) => <Settings {...props}  NavUpdater={this.navUpdate}  />}/>
-                        <Route path={`${this.props.match.url}/Share`} render={(props) => <Share {...props} CarpoolID={this.state.CarpoolID} />} />
+                        <Route path={`${this.props.match.url}/Login`} render={(props) => <Login {...props} CarpoolID={this.state.CarpoolID} CarpoolData={this.state.CarpoolData} LoggedIn={this.state.isLoggedIn}   />}/>
+                        <Route path={`${this.props.match.url}/Display`} render={(props) => <CarpoolDisplay {...props} CarpoolID={this.state.CarpoolID} CarpoolData={this.state.CarpoolData} LoggedIn={this.state.isLoggedIn}    />}/>
+                        <Route path={`${this.props.match.url}/Settings`} render={(props) => <Settings {...props} CarpoolID={this.state.CarpoolID} CarpoolData={this.state.CarpoolData} LoggedIn={this.state.isLoggedIn}    />}/>
+                        <Route path={`${this.props.match.url}/Share`} render={(props) => <Share {...props} CarpoolID={this.state.CarpoolID} CarpoolData={this.state.CarpoolData} LoggedIn={this.state.isLoggedIn} />} />
 
                     </Switch>
 

@@ -2,7 +2,7 @@ from flask_restful import Resource
 
 class Auth(Resource):
 
-    #Authentication Tokens
+    #Log User In
     def post(self):
         '''
 
@@ -23,6 +23,13 @@ class Auth(Resource):
 
         :return:
         '''
-
+        
         return {'token' : '123asdhfjaksdf'}
+
+    # Validate Token
+    def head(self):
+        
+
+
+
 
