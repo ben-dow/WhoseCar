@@ -6,6 +6,8 @@ from backend.api.Authentication import Auth
 api.add_resource(Carpool, '/api/Carpool', '/api/Carpool/<id>')
 
 ''' Authentication '''
+api.add_resource(Auth, '/api/Authentication')
+
 
 ''' Driver '''
 

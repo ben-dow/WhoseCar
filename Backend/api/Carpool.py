@@ -20,6 +20,5 @@ class Carpool(Resource):
         return {'id' : id_generator()}
 
     def head(self, id):
-        abort(404)
         return {'id' : id_generator()}
 
