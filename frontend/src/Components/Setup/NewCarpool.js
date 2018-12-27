@@ -33,7 +33,7 @@ class NewCarpool extends Component {
     handleSubmit() {
         axios({
             method: 'post',
-            url: 'http://localhost:5000/Carpool',
+            url: '/api/Carpool',
             data: {
                 firstName: 'Fred',
                 lastName: 'Flintstone'

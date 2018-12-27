@@ -28,10 +28,8 @@ class Carpool extends Component {
         this.fetchCarpoolData = this.fetchCarpoolData.bind(this);
         this.navUpdate = this.navUpdate.bind(this);
 
-
+        
         this.fetchCarpoolData();
-
-
     }
 
 
@@ -39,7 +37,7 @@ class Carpool extends Component {
     fetchCarpoolData(){
         axios({
             method: 'get',
-            url: 'http://localhost:5000/Carpool/'+this.state.CarpoolID,
+            url: '/api/Carpool/'+this.state.CarpoolID,
 
         }).then(function (response) {
             this.setState({

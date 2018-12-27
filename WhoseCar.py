@@ -6,6 +6,7 @@ from flask_restful import Api
 
 app = Flask(__name__, static_folder='frontend/build')
 api = Api(app)
+cors = CORS(app, origin="http://127.0.0.1:5000")
 
 
 ''' API Setup'''
