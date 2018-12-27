@@ -7,12 +7,9 @@ from flask_restful import Api
 app = Flask(__name__, static_folder='frontend/build')
 api = Api(app)
 
-cors = CORS(app, allow_headers='Content-Type')
 
-app.config['CORS_HEADERS'] = 'Content-Type'
-
-from backend.api import Carpool
-api.add_resource(Carpool, '/api/Carpool', '/api/Carpool/<id>')
+''' API Setup'''
+from backend.api import Setup
 
 ''' Serve React App'''
 
