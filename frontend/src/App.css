@@ -1,0 +1,11 @@
+
+#homepage h1 {
+}
+
+#homepage button {
+    margin-top:10px;
+}
+
+#homepage button:first-of-type{
+    margin-right:10px;
+}

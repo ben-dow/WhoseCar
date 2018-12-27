@@ -1,0 +1,32 @@
+table {
+    width:10px;
+}
+
+
+@media only screen and (min-width: 600px) {
+    .CarpoolDisplay {
+
+        text-align: center;
+    }
+
+
+    .display-card {
+        width:30%;
+        display:inline-block;
+        margin-right:10px;
+        margin-left:10px;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .CarpoolDisplay {
+        width:100%;
+        text-align: center;
+    }
+}
+
+.CarpoolDisplay {
+    width:100%;
+    text-align: center;
+}
