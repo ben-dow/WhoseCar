@@ -20,6 +20,9 @@ def generate_token(user_id, carpool_id):
 def ValidToken(token):
     decoded_token = decode_token(token)
 
+    if decoded_token is False:
+        return False
+
     token_keys = decoded_token.keys()
 
     if len(token_keys) != 3:
@@ -33,8 +36,6 @@ def ValidToken(token):
     if datetime.fromisoformat(decoded_token.get("TokenExpiration")) < datetime.now(): # Check if the Token has Exipred
         return False
 
-
-
     return True
 
 
@@ -42,5 +43,8 @@ def ValidToken(token):
 
 def decode_token(token):
 
-    return jwt.decode(token, os.getenv('jwtSecret'), algorithms=['HS256'])
+    try:
+        return jwt.decode(token, os.getenv('jwtSecret'), algorithms=['HS256'])
+    except jwt.DecodeError:
+        return False
 

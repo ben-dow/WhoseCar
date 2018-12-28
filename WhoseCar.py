@@ -1,15 +1,11 @@
 import os
 from pathlib import Path
 
-from flask import Flask, make_response, send_from_directory
+from dotenv import load_dotenv
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_restful import Api
-from dotenv import load_dotenv
-
-
-app = Flask(__name__, static_folder='frontend/build')
-api = Api(app)
-cors = CORS(app, origin="http://127.0.0.1:5000")
+from flask_sqlalchemy import SQLAlchemy
 
 '''
 Load Environment Configuration
@@ -17,8 +13,25 @@ Load Environment Configuration
 env_path = Path('.') / 'whosemyride.env'
 load_dotenv(dotenv_path=env_path)
 
+
+'''
+Initiate Flask App
+'''
+app = Flask(__name__, static_folder='frontend/build')
+cors = CORS(app, origin="http://127.0.0.1:5000")
+
 ''' API Setup'''
-from backend.api import Setup
+
+api = Api(app)
+from backend.api.Setup import *
+
+'''
+Configure Database
+'''
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DatabaseLocation")
+db = SQLAlchemy(app)
+
+from backend.application.model import *
 
 ''' Serve React App'''
 

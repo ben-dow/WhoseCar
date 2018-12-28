@@ -27,23 +27,19 @@ class Auth(Resource):
             Store
             Create Token and Return
 
-
         :return:
         '''
 
-        token = generate_token("12345", "412uo")
+        token = generate_token("1", "2")
 
         return {'token' : token.decode('utf-8')}
 
     # Validate Token
     def options(self):
-        data = request.json.get("token")
 
-        print(ValidToken(data))
+        token = request.headers.get("Authorization").split(" ")[1]
 
-
-
-        return {'Data':"123"}
+        return {"ValidToken" : ValidToken(token)}
 
 
 
