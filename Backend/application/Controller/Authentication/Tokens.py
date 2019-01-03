@@ -8,13 +8,13 @@ def generate_token(user_id, carpool_id):
         {
             "CarpoolID": carpool_id,
             "UserID": user_id,
-            "TokenExpiration": (datetime.now() + timedelta(hours=1)).isoformat()  # Token Valid for 1 Hour
+            "TokenExpiration": (datetime.now() + timedelta(hours = 1)).isoformat()  # Token Valid for 1 Hour
         },
         os.getenv('jwtSecret'),
         algorithm="HS256"
     )
 
-    return token
+    return token.decode('utf-8')
 
 
 def ValidToken(token):

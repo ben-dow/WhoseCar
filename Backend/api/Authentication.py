@@ -1,11 +1,7 @@
-import os
-import time
-
 from flask import request
 from flask_restful import Resource
-import jwt
 
-from backend.application.Authentication.Tokens import ValidToken, generate_token
+from backend.application.Controller.Authentication.Tokens import ValidToken, generate_token
 
 class Auth(Resource):
 
@@ -32,7 +28,7 @@ class Auth(Resource):
 
         token = generate_token("1", "2")
 
-        return {'token' : token.decode('utf-8')}
+        return {'token' : token}
 
     # Validate Token
     def options(self):
