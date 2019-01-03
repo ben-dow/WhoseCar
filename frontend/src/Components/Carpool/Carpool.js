@@ -73,15 +73,14 @@ class Carpool extends Component {
 
     }
 
-    validateToken(token){
+    validateToken(token) {
         axios(
-            { method: 'head',
-              url: '/api/ValidateToken'
+            {
+                method: 'head',
+                url: '/api/ValidateToken'
             }
         );
-
-
-
+    }
 
 
 

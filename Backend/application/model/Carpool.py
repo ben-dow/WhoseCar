@@ -10,4 +10,3 @@ class Carpool(db.Model):
     description = db.Column(db.String)
     dateAndTime = db.Column(db.DateTime, nullable=False,
                             default=datetime.datetime.now())
-

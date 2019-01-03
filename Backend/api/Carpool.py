@@ -28,11 +28,8 @@ class Carpool(Resource):
         "CarpoolName": "TestName!",
         "Destination": "Place!",
         "Description": "Description!",
-        "Date": "yyy-mm-dd",
-        "Time": "hh-mm"
+        "Datetime" : "YYY-MM-DD:HH:mm:SS
         }
-
-
 
 
             :return:
@@ -44,4 +41,8 @@ class Carpool(Resource):
         # Have application handle the API Request
         new_carpool_id = CreateNewCarpool(r)
 
-        return {'id': new_carpool_id}, 201
+        if new_carpool_id.get("error") is True:
+            abort(400, description=new_carpool_id.get("message"))
+
+
+        return {'id': new_carpool_id.get("id")}, 201

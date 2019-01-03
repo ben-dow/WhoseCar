@@ -20,10 +20,6 @@ Initiate Flask App
 app = Flask(__name__, static_folder='frontend/build')
 cors = CORS(app, origin="http://127.0.0.1:5000")
 
-''' API Setup'''
-
-api = Api(app)
-from backend.api.Setup import *
 
 '''
 Configure Database
@@ -32,6 +28,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DatabaseLocation")
 db = SQLAlchemy(app)
 
 from backend.application.model import *
+
+''' API Setup'''
+
+api = Api(app)
+from backend.api.Setup import *
+
 
 ''' Serve React App'''
 

@@ -11,7 +11,8 @@ class NewCarpool extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ConnectionToServer: true
+            error: false,
+            errorText : ""
         }
 
 
@@ -31,13 +32,24 @@ class NewCarpool extends Component {
     }
 
     handleSubmit() {
+
+        // Prepare Data
+
+        const dateFormating = this.state.dateOfCarpool + " " + this.state.timeOfCarpool;
+
+
+        const SubmitData = {
+            CarpoolName : this.state.CarpoolName,
+            Destination : this.state.Destination,
+            Description : this.state.Description,
+            Datetime : dateFormating
+        }
+
+
         axios({
             method: 'post',
             url: '/api/Carpool',
-            data: {
-                firstName: 'Fred',
-                lastName: 'Flintstone'
-            }
+            data: SubmitData
         }).then(
             function (response) {
                 this.setState({
@@ -47,9 +59,21 @@ class NewCarpool extends Component {
             }.bind(this)
         ).catch(
             function(error){
-                this.setState({
-                    ConnectionToServer : false
-            })
+                const status = error.response.status
+
+                if(status === 400){
+                    this.setState({
+                        error : true,
+                        errorText : "Bad Form Data"
+                    })
+                }
+                else {
+                    this.setState({
+                        error: true,
+                        errorText: "Lost Connection to API Server"
+
+                    })
+                }
             }.bind(this));
     }
 
@@ -65,10 +89,10 @@ class NewCarpool extends Component {
 
         return (
             <div className="center-control" id="NewCarpool">
-                {!this.state.ConnectionToServer &&
+                {this.state.error &&
 
                     <div className="alert alert-danger" role="alert">
-                        Could Not Connect to the Server
+                        {this.state.errorText}
                     </div>
                 }
 
@@ -76,19 +100,19 @@ class NewCarpool extends Component {
 
                 <form >
                     <div className="form-group row">
-                        <input name="carpoolName" onChange={this.handleInputChange} id="carpoolName" className="form-control" type="text" placeholder="Carpool Name" required/>
+                        <input name="CarpoolName" onChange={this.handleInputChange} id="carpoolName" className="form-control" type="text" placeholder="Carpool Name" required/>
                         <small id="passwordHelpBlock" className="form-text text-muted">
                             The Name of Your Carpool
                         </small>
                     </div>
                     <div className="form-group row">
-                        <input name="destination" onChange={this.handleInputChange} id="destination" type="text" className="form-control" placeholder="Destination" required/>
+                        <input name="Destination" onChange={this.handleInputChange} id="destination" type="text" className="form-control" placeholder="Destination" required/>
                         <small id="passwordHelpBlock" className="form-text text-muted">
                             The Destination of the Carpool
                         </small>
                     </div>
                     <div className="form-group row">
-                        <input name="description" onChange={this.handleInputChange} id="description" type="text" className="form-control" placeholder="Description" required/>
+                        <input name="Description" onChange={this.handleInputChange} id="description" type="text" className="form-control" placeholder="Description" required/>
                         <small id="passwordHelpBlock" className="form-text text-muted">
                             The Description of your Event
                         </small>
