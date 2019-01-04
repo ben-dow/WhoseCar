@@ -32,10 +32,12 @@ class Carpool extends Component {
         this.fetchCarpoolData = this.fetchCarpoolData.bind(this);
 
 
-        this.fetchCarpoolData();
     }
 
-
+    componentDidMount(){
+        this.fetchCarpoolData();
+        console.log(this.state)
+    }
 
     fetchCarpoolData(){
         axios({
@@ -53,6 +55,7 @@ class Carpool extends Component {
                 })
             }.bind(this)
         );
+
 
     }
 
@@ -99,13 +102,13 @@ class Carpool extends Component {
 
                 <div id="Application">
                     <div id = "title">
-                        <h3>Carpool: Darien Lake</h3>
+                        <h3>Carpool: {this.state.CarpoolData && this.state.CarpoolData.CarpoolName} </h3>
                     </div>
                     <div >
                         <h5 className="text-center">
                             <b>Description</b>
                         </h5>
-                        <p className="text-center"> We are going to Darien Lake! Be sure to bring water for the day and appropriate clothing! Cost is 10$</p>
+                        <p className="text-center"> {this.state.CarpoolData && this.state.CarpoolData.Description}</p>
                     </div>
                     <table className="table">
                         <tbody>
@@ -116,13 +119,13 @@ class Carpool extends Component {
                         </tr>
                         <tr>
                             <td>
-                                Darien Lake Amusement Park
+                                {this.state.CarpoolData && this.state.CarpoolData.Destination}
                             </td>
                             <td>
-                                December 10 2018
+                                {this.state.CarpoolData && this.state.CarpoolData.Date}
                             </td>
                             <td>
-                                8:00 AM
+                                {this.state.CarpoolData && this.state.CarpoolData.Time}
                             </td>
                         </tr>
                         </tbody>

@@ -30,14 +30,15 @@ class ExistingCarpool extends Component {
 
     handleGetCarpool(){
         axios({
-            method: 'head',
-            url: 'http://localhost:5000/Carpool/' + this.state.carpoolID,
+            method: 'options',
+            url: 'http://127.0.0.1:5000/api/Carpool/' + this.state.carpoolID,
         })
             .then(function (response) {
                 console.log(response)
 
             })
             .catch(function(error){
+
                 this.setState({
                     isCarpoolNotFound : true
 

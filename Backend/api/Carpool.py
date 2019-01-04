@@ -1,8 +1,8 @@
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource, abort
 from backend.application.util import id_generator
 
-from backend.application import CreateNewCarpool
+from backend.application import CreateNewCarpool, FetchExistingCarpoolData
 
 
 class Carpool(Resource):
@@ -16,10 +16,22 @@ class Carpool(Resource):
         :return:
         """
 
-        return {'id': 1234}
+
+        app_response = FetchExistingCarpoolData(id)
+
+        if "error" in app_response:
+            abort(404, description=app_response.get("message"))
+
+        return jsonify(app_response)
 
     def patch(self, id):
         return {'id': "Done"}
+
+    def options(self, id):
+
+        abort(404)
+
+        return {'id' : "123"}
 
     def post(self):
         """

@@ -6,3 +6,5 @@ def CommitToSession(ModelObjects):
         db.session.add(m)
 
     db.session.commit()
+
+    return True

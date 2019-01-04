@@ -24,16 +24,27 @@ def CreateNewCarpool(initial_carpool_data: dict) -> dict:
                 carpool_name=initial_carpool_data.get('CarpoolName'),
                 destination=initial_carpool_data.get('Destination'),
                 description=initial_carpool_data.get('Description'),
-                dateAndTime= datetime.strptime(initial_carpool_data.get('Datetime'), '%Y-%m-%d %H:%M'))
+                dateAndTime=datetime.strptime(initial_carpool_data.get('Datetime'), '%Y-%m-%d %H:%M'))
 
-    DBUpdater([c])
+    update = DBUpdater([c])
 
-    return {"id": id_generator(), "error": False, "message": "Success"}
+    if update is True:
+        return {"id": generated_id, "error": False, "message": "Success"}
+    else:
+        return {"id": None, "error": True, "message": "Unknown Error"}
 
 
 def UpdateCarpoolData(updated_carpool_data):
-    return True
+    pass
 
 
 def FetchExistingCarpoolData(carpool_id):
-    return {}
+    # Query For Item
+    item = Carpool.query.filter_by(id=carpool_id).first()
+
+    # Abort if Item is None
+
+    if item is None:
+        return {"error": True, "message": "Carpool with id {0} Not Found".format(carpool_id)}
+
+    return item.to_dict()
