@@ -39,8 +39,6 @@ def ValidToken(token):
     return True
 
 
-
-
 def decode_token(token):
 
     try:

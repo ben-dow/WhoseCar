@@ -25,6 +25,7 @@ cors = CORS(app, origin="http://127.0.0.1:5000")
 Configure Database
 '''
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DatabaseLocation")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from backend.application.model import *
@@ -45,8 +46,6 @@ def serve(path):
         return send_from_directory('frontend/build', path)
     else:
         return send_from_directory('frontend/build', 'index.html')
-
-
 
 
 if __name__ == '__main__':

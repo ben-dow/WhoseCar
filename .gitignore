@@ -60,3 +60,7 @@ __pycache__
 .DS_Store
 *.env
 *.db
+
+
+MaintenenceScripts
+MaintenenceScripts/*

@@ -47,4 +47,6 @@ def FetchExistingCarpoolData(carpool_id):
     if item is None:
         return {"error": True, "message": "Carpool with id {0} Not Found".format(carpool_id)}
 
+    print(item.users)
+
     return item.to_dict()
