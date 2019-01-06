@@ -1,3 +1,5 @@
+import hashlib, binascii
+
 def Authenticate(CarpoolID, Username, Password):
     pass
 

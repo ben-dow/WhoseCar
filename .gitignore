@@ -62,5 +62,6 @@ __pycache__
 *.db
 
 
-MaintenenceScripts
-MaintenenceScripts/*
+MaintenanceScripts
+MaintenanceScripts/*
+
