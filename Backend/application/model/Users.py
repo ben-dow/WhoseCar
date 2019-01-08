@@ -27,4 +27,4 @@ class User(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.datetime.now())
 
     carpool = db.relationship('Carpool',
-                               backref=db.backref('users', lazy=True))
+                               backref=db.backref('users', lazy="dynamic"))

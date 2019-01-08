@@ -1,13 +1,15 @@
 from flask import request
-from flask_restful import Resource
+from flask_restful import Resource, abort
 
+from backend.application.Controller.Authentication.Authenticate import Register
 from backend.application.Controller.Authentication.Tokens import ValidToken, generate_token
+
 
 class Auth(Resource):
 
-    #Log User In
+    # Log User In
     def post(self):
-        '''
+        """
 
         TODO:
 
@@ -24,21 +26,30 @@ class Auth(Resource):
             Create Token and Return
 
         :return:
-        '''
+        """
 
-        token = generate_token("1", "2")
+        data = request.json
 
-        return {'token' : token}
+        print(data)
+
+        # Get Requested Data
+
+        CarpoolID = data.get("CarpoolID")
+        Username = data.get("Username")
+        Password = data.get("Password")
+
+        print(CarpoolID)
+
+        try:
+            Register(CarpoolID, Username, Password)
+        except ValueError as e:
+            abort(400, description=e.args)
+
+        return {"message": "hello"}
 
     # Validate Token
     def options(self):
 
         token = request.headers.get("Authorization").split(" ")[1]
 
-        return {"ValidToken" : ValidToken(token)}
-
-
-
-
-
-
+        return {"ValidToken": ValidToken(token)}

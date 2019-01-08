@@ -29,8 +29,11 @@ class CarParticipants(db.Model):
 
     is_driver = db.Column(db.Boolean, nullable=False)
 
-    car = db.relationship('cars.id',
+    car = db.relationship('Cars',
                               backref=db.backref('riders', lazy=True))
 
     user = db.relationship('User',
                               backref=db.backref('ride_info', lazy=True))
+
+    carpool = db.relationship('Carpool',
+                          backref=db.backref('rider_information', lazy=True))

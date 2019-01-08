@@ -24,7 +24,7 @@ def CreateNewCarpool(initial_carpool_data: dict) -> dict:
                 carpool_name=initial_carpool_data.get('CarpoolName'),
                 destination=initial_carpool_data.get('Destination'),
                 description=initial_carpool_data.get('Description'),
-                dateAndTime=datetime.strptime(initial_carpool_data.get('Datetime'), '%Y-%m-%d %H:%M'))
+                time_of_carpool=datetime.strptime(initial_carpool_data.get('Datetime'), '%Y-%m-%d %H:%M'))
 
     update = DBUpdater([c])
 

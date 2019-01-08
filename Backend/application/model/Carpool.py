@@ -8,7 +8,7 @@ class Carpool(db.Model):
     carpool_name = db.Column(db.String, nullable=False)
     destination = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    time_of_carpool = db.Column(db.DateTime, nullable=False)
+    time_of_carpool = db.Column(db.DateTime)
     date_created = db.Column(db.DateTime, default=datetime.datetime.now())
 
     def to_dict(self):
